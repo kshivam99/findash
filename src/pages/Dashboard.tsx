@@ -1,9 +1,5 @@
 import {
   Table,
-  Progress,
-  Anchor,
-  Text,
-  Group,
   ScrollArea,
   Container,
 } from "@mantine/core";
@@ -17,12 +13,8 @@ export function Dashboard() {
   const [filteredData, setFilteredData] = useState(mockData);
   const [scrolled, setScrolled] = useState(false);
 
-  console.log(filteredData);
 
   const rows = filteredData.map((row) => {
-    // const totalReviews = row.reviews.negative + row.reviews.positive;
-    // const positiveReviews = (row.reviews.positive / totalReviews) * 100;
-    // const negativeReviews = (row.reviews.negative / totalReviews) * 100;
 
     return (
       <Table.Tr key={row.id}>
@@ -50,7 +42,7 @@ export function Dashboard() {
           >
             <Table.Tr>
               <Table.Th>Company</Table.Th>
-              <Table.Th>Raised Capital</Table.Th>
+              <Table.Th>Raised Capital (Million $)</Table.Th>
               <Table.Th>Turnover</Table.Th>
               <Table.Th>Net Profit</Table.Th>
               <Table.Th>Loan Amount</Table.Th>

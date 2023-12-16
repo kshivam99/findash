@@ -1,13 +1,15 @@
 import { Container, RangeSlider, Select, TextInput } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import mockData from "../data/mockData";
 import { FinData } from "../types";
+import { convertToCamelCase } from "../utils";
 
 const OPTIONS = [
   "Company Name",
   "Address",
   "Registration Date",
   "Number Of Employees",
-  "Raised Capital",
+  "Raised Capital in Millions $",
   "Turnover",
   "Net Profit",
   "Contact Number",
@@ -19,7 +21,7 @@ const OPTIONS = [
 ];
 
 const RangeKeys = [
-  "Raised Capital",
+  "Raised Capital in Millions $",
   "Turnover",
   "Net Profit",
   "Loan Amount",
@@ -32,9 +34,28 @@ function Filter({
   setFilteredData: React.Dispatch<React.SetStateAction<FinData[]>>;
 }) {
   const [filterKey, setFilterKey] = useState<string>("Company Name");
-  const [rangeValue, setRangeValue] = useState<[number, number]>([0, 1000]);
+  const [rangeValue, setRangeValue] = useState<[number, number]>([0, 100]);
   const [searchInput, setSearchInput] = useState<string>("");
   const isRangeFilter = RangeKeys.includes(filterKey);
+
+  useEffect(() => {
+    const camelCaseFilterKey = convertToCamelCase(filterKey) as keyof FinData;
+    if (isRangeFilter) {
+      const _updatedData = mockData.filter(
+        (val) =>
+          Number(val[camelCaseFilterKey]) > rangeValue[0] &&
+          Number(val[camelCaseFilterKey]) < rangeValue[1]
+      );
+      setFilteredData(_updatedData);
+    } else {
+      const _updatedData = mockData.filter((val) =>
+        String(val[camelCaseFilterKey])
+          .toLowerCase()
+          .includes(searchInput.toLowerCase())
+      );
+      setFilteredData(_updatedData);
+    }
+  }, [filterKey, rangeValue, searchInput]);
 
   return (
     <Container>
@@ -48,7 +69,12 @@ function Filter({
         onSearchChange={setFilterKey}
       />
       {isRangeFilter ? (
-        <RangeSlider min={0} max={10000000} value={rangeValue} onChange={setRangeValue} />
+        <RangeSlider
+          min={0}
+          max={10000}
+          value={rangeValue}
+          onChange={setRangeValue}
+        />
       ) : (
         <TextInput
           placeholder={`Enter ${filterKey}`}
