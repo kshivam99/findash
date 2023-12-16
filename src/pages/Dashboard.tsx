@@ -1,21 +1,12 @@
-import {
-  Table,
-  ScrollArea,
-  Container,
-} from "@mantine/core";
-import classes from "../styles/Dashboard.module.css";
+import { Table, ScrollArea, Container } from "@mantine/core";
 import mockData from "../data/mockData";
 import { useState } from "react";
-import cx from "clsx";
 import Filter from "../components/Filter";
 
 export function Dashboard() {
   const [filteredData, setFilteredData] = useState(mockData);
-  const [scrolled, setScrolled] = useState(false);
-
 
   const rows = filteredData.map((row) => {
-
     return (
       <Table.Tr key={row.id}>
         <Table.Td style={{ textAlign: "left" }}>{row.companyName}</Table.Td>
@@ -35,11 +26,9 @@ export function Dashboard() {
   return (
     <Container p={"30px"} size={"responsive"}>
       <Filter setFilteredData={setFilteredData} />
-      <ScrollArea onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+      <ScrollArea>
         <Table verticalSpacing="xs">
-          <Table.Thead
-            className={cx(classes.header, { [classes.scrolled]: scrolled })}
-          >
+          <Table.Thead>
             <Table.Tr>
               <Table.Th>Company</Table.Th>
               <Table.Th>Raised Capital (Million $)</Table.Th>

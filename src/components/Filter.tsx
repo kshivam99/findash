@@ -1,4 +1,4 @@
-import { Container, RangeSlider, Select, TextInput } from "@mantine/core";
+import { Container, Flex, RangeSlider, Select, TextInput } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import mockData from "../data/mockData";
 import { FinData } from "../types";
@@ -7,9 +7,8 @@ import { convertToCamelCase } from "../utils";
 const OPTIONS = [
   "Company Name",
   "Address",
-  "Registration Date",
   "Number Of Employees",
-  "Raised Capital in Millions $",
+  "Raised Capital",
   "Turnover",
   "Net Profit",
   "Contact Number",
@@ -21,7 +20,7 @@ const OPTIONS = [
 ];
 
 const RangeKeys = [
-  "Raised Capital in Millions $",
+  "Raised Capital",
   "Turnover",
   "Net Profit",
   "Loan Amount",
@@ -33,35 +32,36 @@ function Filter({
 }: {
   setFilteredData: React.Dispatch<React.SetStateAction<FinData[]>>;
 }) {
-  const [filterKey, setFilterKey] = useState<string>("Company Name");
+  const [filterKey, setFilterKey] = useState<string>("");
   const [rangeValue, setRangeValue] = useState<[number, number]>([0, 100]);
   const [searchInput, setSearchInput] = useState<string>("");
   const isRangeFilter = RangeKeys.includes(filterKey);
 
   useEffect(() => {
-    const camelCaseFilterKey = convertToCamelCase(filterKey) as keyof FinData;
-    if (isRangeFilter) {
-      const _updatedData = mockData.filter(
-        (val) =>
-          Number(val[camelCaseFilterKey]) > rangeValue[0] &&
-          Number(val[camelCaseFilterKey]) < rangeValue[1]
-      );
-      setFilteredData(_updatedData);
-    } else {
-      const _updatedData = mockData.filter((val) =>
-        String(val[camelCaseFilterKey])
-          .toLowerCase()
-          .includes(searchInput.toLowerCase())
-      );
-      setFilteredData(_updatedData);
+    if (filterKey.length) {
+      const camelCaseFilterKey = convertToCamelCase(filterKey) as keyof FinData;
+      if (isRangeFilter) {
+        const _updatedData = mockData.filter(
+          (val) =>
+            Number(val[camelCaseFilterKey]) > rangeValue[0] &&
+            Number(val[camelCaseFilterKey]) < rangeValue[1]
+        );
+        setFilteredData(_updatedData);
+      } else {
+        const _updatedData = mockData.filter((val) =>
+          String(val[camelCaseFilterKey])
+            .toLowerCase()
+            .includes(searchInput.toLowerCase())
+        );
+        setFilteredData(_updatedData);
+      }
     }
   }, [filterKey, rangeValue, searchInput]);
 
   return (
-    <Container>
+    <Flex gap="md" align="flex-start" direction="row" ml={'10px'} mb={'30px'}>
       <Select
-        label="Filter Data by"
-        placeholder="Select"
+        placeholder="Filter Data by"
         data={OPTIONS}
         defaultValue="Company Name"
         searchable
@@ -82,7 +82,7 @@ function Filter({
           onChange={(event) => setSearchInput(event.currentTarget.value)}
         />
       )}
-    </Container>
+    </Flex>
   );
 }
 
