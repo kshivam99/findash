@@ -1,4 +1,4 @@
-import { Container, Flex, RangeSlider, Select, TextInput } from "@mantine/core";
+import { Box, Container, Flex, RangeSlider, Select, TextInput } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import mockData from "../data/mockData";
 import { FinData } from "../types";
@@ -33,7 +33,7 @@ function Filter({
   setFilteredData: React.Dispatch<React.SetStateAction<FinData[]>>;
 }) {
   const [filterKey, setFilterKey] = useState<string>("");
-  const [rangeValue, setRangeValue] = useState<[number, number]>([0, 100]);
+  const [rangeValue, setRangeValue] = useState<[number, number]>([0, 999]);
   const [searchInput, setSearchInput] = useState<string>("");
   const isRangeFilter = RangeKeys.includes(filterKey);
 
@@ -56,25 +56,26 @@ function Filter({
         setFilteredData(_updatedData);
       }
     }
-  }, [filterKey, rangeValue, searchInput]);
+  }, [filterKey, rangeValue, searchInput, isRangeFilter, setFilteredData]);
 
   return (
-    <Flex gap="md" align="flex-start" direction="row" ml={'10px'} mb={'30px'}>
+    <Flex gap="md" align="flex-start" direction="row" ml={"10px"}>
       <Select
         placeholder="Filter Data by"
         data={OPTIONS}
-        defaultValue="Company Name"
         searchable
         searchValue={filterKey}
         onSearchChange={setFilterKey}
       />
       {isRangeFilter ? (
-        <RangeSlider
-          min={0}
-          max={10000}
-          value={rangeValue}
-          onChange={setRangeValue}
-        />
+        <Box mt={'10px'} style={{ width: "10vw" }}>
+          <RangeSlider
+            min={0}
+            max={999}
+            value={rangeValue}
+            onChange={setRangeValue}
+          />
+        </Box>
       ) : (
         <TextInput
           placeholder={`Enter ${filterKey}`}
