@@ -1,4 +1,14 @@
-import { Box, Container, Flex, RangeSlider, Select, TextInput } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Container,
+  Flex,
+  RangeSlider,
+  Select,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import mockData from "../data/mockData";
 import { FinData } from "../types";
@@ -36,6 +46,7 @@ function Filter({
   const [rangeValue, setRangeValue] = useState<[number, number]>([0, 999]);
   const [searchInput, setSearchInput] = useState<string>("");
   const isRangeFilter = RangeKeys.includes(filterKey);
+  const isSmallScreen = useMediaQuery("(max-width: 640px)");
 
   useEffect(() => {
     if (filterKey.length) {
@@ -59,7 +70,12 @@ function Filter({
   }, [filterKey, rangeValue, searchInput, isRangeFilter, setFilteredData]);
 
   return (
-    <Flex gap="md" align="flex-start" direction="row" ml={"10px"}>
+    <Flex
+      gap="md"
+      align="flex-start"
+      direction={isSmallScreen ? "column" : "row"}
+      ml={"10px"}
+    >
       <Select
         placeholder="Filter Data by"
         data={OPTIONS}
@@ -68,12 +84,17 @@ function Filter({
         onSearchChange={setFilterKey}
       />
       {isRangeFilter ? (
-        <Box mt={'10px'} style={{ width: "10vw" }}>
+        <Box style={{ width: "10vw", marginTop: "-6px" }}>
+          <Badge size="xs" variant="light" color="blue">
+            in $ Millions
+          </Badge>
+
           <RangeSlider
             min={0}
             max={999}
             value={rangeValue}
             onChange={setRangeValue}
+            size="sm"
           />
         </Box>
       ) : (

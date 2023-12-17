@@ -1,25 +1,20 @@
-import {
-  Container,
-  Modal,
-  Flex,
-  Button,
-  Badge,
-} from "@mantine/core";
+import { Container, Modal, Flex, Button, Badge } from "@mantine/core";
 import mockData from "../data/mockData";
 import { useState } from "react";
 import Filter from "../components/Filter";
 import FinancialChart from "../components/Chart";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { FinancialTable } from "../components/Table";
 import { IconPhoto } from "@tabler/icons-react";
 
 export function Dashboard() {
   const [filteredData, setFilteredData] = useState(mockData);
   const [opened, { open, close }] = useDisclosure(false);
+  const isSmallScreen = useMediaQuery("(max-width: 640px)");
 
   return (
-    <Container p={"30px"} size={"responsive"}>
-      <Flex gap="md" direction="row" align="center" mb={"30px"}>
+    <Container size={"responsive"}>
+      <Flex gap="md" direction="row" align="center" mb={"50px"}>
         <Filter setFilteredData={setFilteredData} />
         <Flex
           direction={"row"}
@@ -28,13 +23,13 @@ export function Dashboard() {
           gap="md"
           style={{ flex: 1 }}
         >
-          <Badge color="blue">Visualize Raised Capital of Companies</Badge>
           <Button
             leftSection={<IconPhoto size={14} />}
-            variant="default"
+            variant="filled"
             onClick={open}
+            color="blue"
           >
-            Generate Chart
+            {isSmallScreen ? `Show Chart` : `Visualize Chart for Raised Capital`}
           </Button>
         </Flex>
       </Flex>
