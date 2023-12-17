@@ -1,12 +1,14 @@
 import React from "react";
-import { Button, Flex, Title, Text, Box } from "@mantine/core";
+import { Button, Flex, Title, Text } from "@mantine/core";
 import { auth } from "../firebase";
+import { useMediaQuery } from "@mantine/hooks";
 
 function Navbar({
   setIsAuthenticated,
 }: {
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const isSmallScreen = useMediaQuery("(max-width: 640px)");
   const user = JSON.parse(localStorage.getItem("user")!);
   //@ts-ignore
   const name = user.displayName;
@@ -38,7 +40,12 @@ function Navbar({
         </Title>
       </Flex>
       <Flex>
-        <Flex mr={"20px"} mt={"4px"} gap={"2px"}>
+        <Flex
+          mr={"20px"}
+          mt={"4px"}
+          gap={"2px"}
+          style={{ display: isSmallScreen ? "none" : "flex" }}
+        >
           <Text size="lg" fw={600} color="blue">
             Hey,
           </Text>
