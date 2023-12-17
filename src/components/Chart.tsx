@@ -2,6 +2,7 @@ import React from "react";
 import { Chart, registerables } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { FinData } from "../types";
+import { Box } from "@mantine/core";
 Chart.register(...registerables);
 
 interface FinancialChartProps {
@@ -31,9 +32,9 @@ const FinancialChart: React.FC<FinancialChartProps> = ({ data }) => {
   };
 
   return (
-    <div>
+    <Box>
       <Bar data={chartData} options={chartOptions} />
-    </div>
+    </Box>
   );
 };
 

@@ -1,12 +1,10 @@
 import {
   Badge,
   Box,
-  Container,
   Flex,
   RangeSlider,
   Select,
   TextInput,
-  useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
@@ -88,7 +86,6 @@ function Filter({
           <Badge size="xs" variant="light" color="blue">
             in $ Millions
           </Badge>
-
           <RangeSlider
             min={0}
             max={999}

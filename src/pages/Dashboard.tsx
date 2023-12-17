@@ -29,11 +29,13 @@ export function Dashboard() {
             onClick={open}
             color="blue"
           >
-            {isSmallScreen ? `Show Chart` : `Visualize Chart for Raised Capital`}
+            {isSmallScreen
+              ? `Show Chart`
+              : `Visualize Chart for Raised Capital`}
           </Button>
         </Flex>
       </Flex>
-
+      <FinancialTable filteredData={filteredData} />
       <Modal
         size="xl"
         centered
@@ -43,7 +45,6 @@ export function Dashboard() {
       >
         <FinancialChart data={filteredData} />
       </Modal>
-      <FinancialTable filteredData={filteredData} />
     </Container>
   );
 }
